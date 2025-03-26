@@ -29,6 +29,9 @@ WORKDIR /app
 # Copy the entire project
 COPY . /app
 
+# Copy requirements file from the specified location
+COPY /opt/requirements.txt /app/requirements.txt
+
 # Create virtual environment
 RUN python3 -m venv /app/venv
 
@@ -36,14 +39,14 @@ RUN python3 -m venv /app/venv
 RUN . /app/venv/bin/activate && \
     pip install --upgrade pip && \
     pip install gunicorn && \
-    pip install -r requirements.txt
+    pip install -r /app/requirements.txt
 
 # Install wait-for-it script
 RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/local/bin/wait-for-it.sh \
     && chmod +x /usr/local/bin/wait-for-it.sh
 
 # Make upgrade script executable
-RUN chmod +x /app/upgrade.sh
+RUN if [ -f /app/upgrade.sh ]; then chmod +x /app/upgrade.sh; fi
 
 # Expose ports
 EXPOSE 8000 8001
