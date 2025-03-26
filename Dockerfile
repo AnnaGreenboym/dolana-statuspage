@@ -30,7 +30,11 @@ WORKDIR /app
 COPY . /app
 
 # Copy requirements file from the specified location
-COPY /opt/requirements.txt /app/requirements.txt
+COPY opt/requirements.txt /app/requirements.txt
+
+# Copy upgrade script and make it executable
+COPY opt/upgrade.sh /app/upgrade.sh
+RUN chmod +x /app/upgrade.sh
 
 # Create virtual environment
 RUN python3 -m venv /app/venv
@@ -44,9 +48,6 @@ RUN . /app/venv/bin/activate && \
 # Install wait-for-it script
 RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/local/bin/wait-for-it.sh \
     && chmod +x /usr/local/bin/wait-for-it.sh
-
-# Make upgrade script executable
-RUN if [ -f /app/upgrade.sh ]; then chmod +x /app/upgrade.sh; fi
 
 # Expose ports
 EXPOSE 8000 8001
