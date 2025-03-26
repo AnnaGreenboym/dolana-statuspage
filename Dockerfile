@@ -31,6 +31,9 @@ COPY ./opt /opt
 # Add user
 RUN adduser --system --group status-page
 
+RUN apt-get update && apt-get install -y wget \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install wait-for-it script for dependency checking
 RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/local/bin/wait-for-it.sh \
     && chmod +x /usr/local/bin/wait-for-it.sh
