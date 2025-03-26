@@ -26,34 +26,27 @@ RUN apt-get update && apt-get install -y \
 # Set the working directory inside the container
 WORKDIR /opt
 
-# Copy the entrypoint script first
+# Copy necessary files early
+COPY ./opt /opt
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-# Set permissions immediately after copying
-RUN chmod +x /usr/local/bin/entrypoint.sh
+# Set permissions and ensure directories exist
+RUN chmod +x /usr/local/bin/entrypoint.sh \
+    && mkdir -p /opt/venv \
+    && chmod -R 777 /opt
 
-# Copy necessary files
-COPY ./opt /opt
-
-# Add user
-RUN adduser --system --group status-page
-
-# Install wait-for-it script for dependency checking
-RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/local/bin/wait-for-it.sh \
-    && chmod +x /usr/local/bin/wait-for-it.sh
-
-# Set permissions
-RUN chown -R status-page:status-page /opt
-
-# Switch to status-page user
-USER status-page
-
-# Create and activate virtual environment
+# Create virtual environment as root
 RUN python3 -m venv /opt/venv
 
 # Activate virtual environment and install dependencies
 RUN . /opt/venv/bin/activate && \
-    pip install --no-cache-dir -r /opt/requirements.txt
+    pip install --upgrade pip && \
+    pip install gunicorn && \
+    pip install -r /opt/requirements.txt
+
+# Install wait-for-it script
+RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/local/bin/wait-for-it.sh \
+    && chmod +x /usr/local/bin/wait-for-it.sh
 
 # Expose ports
 EXPOSE 8000 8001
