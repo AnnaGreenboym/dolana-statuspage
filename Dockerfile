@@ -1,6 +1,8 @@
-FROM python:3.13-slim
+# Use the official Ubuntu image from Docker Hub as the base image
+FROM  python:3.13-slim
 
-# Install system dependencies
+
+# Update the package list and install essential packages
 RUN apt-get update && apt-get install -y \
     supervisor \
     systemctl \
@@ -18,43 +20,17 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libssl-dev \
     zlib1g-dev \
-    netcat-openbsd \
-    wget \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean
 
-# Set the working directory
-WORKDIR /app
+# Set the working directory inside the container
+WORKDIR /opt
 
-# Copy the entire project
-COPY . /app
+COPY ./opt /opt
 
-# Copy requirements file from the specified location
-COPY opt/requirements.txt /app/requirements.txt
+#Expose the application port (Gunicorn typically runs on 8001)
+EXPOSE 8001
+#add user
+RUN adduser --system --group status-page
 
-# Copy upgrade script and make it executable
-COPY opt/upgrade.sh /app/upgrade.sh
-RUN chmod +x /app/upgrade.sh
 
-# Create virtual environment
-RUN python3 -m venv /app/venv
-
-# Activate virtual environment and install dependencies
-RUN . /app/venv/bin/activate && \
-    pip install --upgrade pip && \
-    pip install gunicorn && \
-    pip install -r /app/requirements.txt
-
-# Install wait-for-it script
-RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/local/bin/wait-for-it.sh \
-    && chmod +x /usr/local/bin/wait-for-it.sh
-
-# Expose ports
-EXPOSE 8000 8001
-
-# Copy and make entrypoint executable
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
-# Use entrypoint to manage dependencies and startup
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# RUN status-page/upgrade.sh
