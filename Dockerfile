@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libssl-dev \
     zlib1g-dev \
-    netcat-openbsd \  # Add netcat for port checking
+    netcat-openbsd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
