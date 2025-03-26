@@ -25,8 +25,6 @@ RUN apt-get update && apt-get install -y \
 # Set the working directory inside the container
 WORKDIR /opt
 
-COPY ./opt /opt
-
 #Expose the application port (Gunicorn typically runs on 8001)
 EXPOSE 8001
 #add user
