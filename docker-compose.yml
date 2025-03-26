@@ -12,7 +12,7 @@ services:
     hostname: redis-server
 
   status-page:
-    build: .
+    build: status-page
     container_name: status-page
     restart: "no"  # Prevents auto-restarting after script runs
     depends_on:
