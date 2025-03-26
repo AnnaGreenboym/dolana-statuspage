@@ -11,7 +11,9 @@ services:
     hostname: redis-server
 
   status-page:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     container_name: status-page
     depends_on:
       - redis
