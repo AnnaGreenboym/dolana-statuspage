@@ -19,20 +19,24 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     zlib1g-dev \
     netcat-openbsd \
+    wget \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory inside the container
 WORKDIR /opt
 
+# Copy the entrypoint script first
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+# Set permissions immediately after copying
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 # Copy necessary files
 COPY ./opt /opt
 
 # Add user
 RUN adduser --system --group status-page
-
-RUN apt-get update && apt-get install -y wget \
-    && rm -rf /var/lib/apt/lists/*
 
 # Install wait-for-it script for dependency checking
 RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/local/bin/wait-for-it.sh \
@@ -53,10 +57,6 @@ RUN . /opt/venv/bin/activate && \
 
 # Expose ports
 EXPOSE 8000 8001
-
-# Entrypoint script to handle dependencies and startup
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Use entrypoint to manage dependencies and startup
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
