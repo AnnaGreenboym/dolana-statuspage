@@ -16,7 +16,7 @@ services:
       dockerfile: Dockerfile
     container_name: status-page
     volumes:
-      - /opt/requirements.txt:/app/requirements.txt
+      - ./opt/requirements.txt:/app/requirements.txt
     depends_on:
       - redis
     networks:
