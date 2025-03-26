@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   redis:
     image: redis:latest
@@ -11,21 +12,30 @@ services:
     hostname: redis-server
 
   status-page:
-    build: 
-      context: .
-      dockerfile: Dockerfile
+    image: status-page
     container_name: status-page
-    volumes:
-      - ./opt/requirements.txt:/app/requirements.txt
+    restart: "no"  # Prevents auto-restarting after script runs
     depends_on:
       - redis
     networks:
       - mynetwork
+    environment:
+      REDIS_HOST: redis-server
     ports:
       - "8000:8000"
       - "8001:8001"
-    environment:
-      REDIS_HOST: redis-server
+    hostname: status-page-server
+    command: >
+      /bin/bash -c "
+      echo 'Running upgrade.sh...' &&
+      bash /opt/upgrade.sh &&
+      source /opt/venv/bin/activate &&
+      gunicorn --bind 0.0.0.0:8000 statuspage.wsgi:application --chdir /opt/statuspage --workers 3 --log-level debug
+      "
+
+
+
+
 
 networks:
   mynetwork:
