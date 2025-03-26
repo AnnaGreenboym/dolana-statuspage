@@ -23,33 +23,34 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Set the working directory inside the container
-WORKDIR /opt
+# Set the working directory
+WORKDIR /app
 
-# Copy necessary files early
-COPY ./opt /opt
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+# Copy the entire project
+COPY . /app
 
-# Set permissions and ensure directories exist
-RUN chmod +x /usr/local/bin/entrypoint.sh \
-    && mkdir -p /opt/venv \
-    && chmod -R 777 /opt
-
-# Create virtual environment as root
-RUN python3 -m venv /opt/venv
+# Create virtual environment
+RUN python3 -m venv /app/venv
 
 # Activate virtual environment and install dependencies
-RUN . /opt/venv/bin/activate && \
+RUN . /app/venv/bin/activate && \
     pip install --upgrade pip && \
     pip install gunicorn && \
-    pip install -r /opt/requirements.txt
+    pip install -r requirements.txt
 
 # Install wait-for-it script
 RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/local/bin/wait-for-it.sh \
     && chmod +x /usr/local/bin/wait-for-it.sh
 
+# Make upgrade script executable
+RUN chmod +x /app/upgrade.sh
+
 # Expose ports
 EXPOSE 8000 8001
+
+# Copy and make entrypoint executable
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Use entrypoint to manage dependencies and startup
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
