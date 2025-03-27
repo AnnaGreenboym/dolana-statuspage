@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-server
+  namespace: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-server
+  template:
+    metadata:
+      labels:
+        app: redis-server
+    spec:
+      containers:
+        - name: redis-server
+          image: redis:latest
+          ports:
+            - containerPort: 6379
+#          command:
+#            - "redis-server"
+#            - "--requirepass"
+#            - "0123456789abcdef"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-server
+  namespace: staging
+  labels:
+    app: redis-server
+spec:
+  type: ClusterIP
+  selector:
+    app: redis-server
+  ports:
+    - port: 6379
+      name: redis-server
+      targetPort: 6379
+      protocol: TCP

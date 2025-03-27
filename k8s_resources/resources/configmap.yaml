@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: status-page-config
+  namespace: status-page
+data:
+  STATIC_PAGE_IMAGE: 992382545251.dkr.ecr.us-east-1.amazonaws.com/anna/final-workshop:latest
+  REDIS_HOST: redis-server
+  REDIS_PORT: "6379"
+  GUNICORN_WORKERS: "3"
+
