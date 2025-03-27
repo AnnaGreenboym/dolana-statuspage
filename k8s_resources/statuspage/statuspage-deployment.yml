@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: status-page
+  name: status-page-server
   namespace: staging
   labels:
-    app: status-page
+    app: status-page-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: status-page
+      app: status-page-server
   template:
     metadata:
       labels:
-        app: status-page
+        app: status-page-server
     spec:
       containers:
-      - name: status-page 
+      - name: status-page-server
         image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/anna/final-workshop:test
         imagePullPolicy: Always
         ports:
@@ -27,17 +27,17 @@ spec:
           value: redis-server                
         volumeMounts:
           - name: static-files
-            mountPath: /opt/temp  
-        command: [ "tail", "-f", "/dev/null" ]                
+            mountPath: /temp  
+        #command: [ "tail", "-f", "/dev/null" ]                
         command: ["/bin/bash", "-c"]
         args:
           - |
             echo 'Running upgrade.sh...' &&
             bash /opt/upgrade.sh &&
 
-            mkdir -p /opt/temp/static &&
-            cp /opt/contrib/nginx.conf /opt/temp/ &&
-            cp -r /opt/statuspage/static/* /opt/temp/static/ &&
+            mkdir -p /temp/static &&
+            cp /opt/contrib/nginx.conf /temp/ &&
+            cp -r /opt/statuspage/static/* /temp/static/ &&
 
             source /opt/venv/bin/activate &&
             gunicorn --bind 0.0.0.0:8000 statuspage.wsgi:application \
@@ -51,11 +51,11 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: status-page
+  name: status-page-server
 spec:
   type: ClusterIP
   selector:
-    app:  status-page
+    app:  status-page-server
   ports:
     - name: appport
       protocol: TCP

@@ -22,11 +22,16 @@ spec:
           - containerPort: 443
         volumeMounts:
         - name: efs-volume
-          mountPath: /etc/nginx/nginx.conf
-          subPath: opt/temp/nginx.conf
+          mountPath: /opt/statuspage/nginx.conf
+          subPath: nginx.conf
         - name: efs-volume
           mountPath: /opt/statuspage/static
-          subPath: opt/temp/static
+          subPath: static
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            cp /opt/statuspage/nginx.conf /etc/nginx/nginx.conf &&
+            nginx -g 'daemon off;'
       volumes:
       - name: efs-volume
         persistentVolumeClaim:
