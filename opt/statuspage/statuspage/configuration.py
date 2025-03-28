@@ -23,12 +23,12 @@ DATABASE = {
 # for each. Full connection details are required.
 REDIS = {
     'tasks': {
-        'HOST': 'redis-server',
+        'HOST': 'dolana-cache-7fftml.serverless.use1.cache.amazonaws.com',
         'PORT': 6379,
         # Comment out `HOST` and `PORT` lines and uncomment the following if using Redis Sentinel
         # 'SENTINELS': [('mysentinel.redis.example.com', 6379)],
         # 'SENTINEL_SERVICE': 'status-page',
-        'PASSWORD': '',
+        'PASSWORD': '0123456789abcdef',
         'DATABASE': 0,
         'SSL': False,
         # Set this to True to skip TLS certificate verification
@@ -36,12 +36,12 @@ REDIS = {
         # 'INSECURE_SKIP_TLS_VERIFY': False,
     },
     'caching': {
-        'HOST': 'redis-server',
+        'HOST': 'dolana-cache-7fftml.serverless.use1.cache.amazonaws.com',
         'PORT': 6379,
         # Comment out `HOST` and `PORT` lines and uncomment the following if using Redis Sentinel
         # 'SENTINELS': [('mysentinel.redis.example.com', 6379)],
         # 'SENTINEL_SERVICE': 'statuspage',
-        'PASSWORD': '',
+        'PASSWORD': '0123456789abcdef',
         'DATABASE': 1,
         'SSL': False,
         # Set this to True to skip TLS certificate verification
