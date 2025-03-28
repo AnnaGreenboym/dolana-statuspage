@@ -4,8 +4,28 @@ metadata:
   name: status-page-config
   namespace: status-page
 data:
-  STATIC_PAGE_IMAGE: 992382545251.dkr.ecr.us-east-1.amazonaws.com/anna/final-workshop:latest
   REDIS_HOST: redis-server
   REDIS_PORT: "6379"
   GUNICORN_WORKERS: "3"
 
+
+
+#        env:
+#            - name: REDIS_HOST
+#              value: "dolana-cache-7fftml.serverless.use1.cache.amazonaws.com"
+#
+#
+#    environment:
+#
+#ALLOWED_HOSTS=*
+#DATABASE_NAME=statuspage
+#DATABASE_USER=postgres
+#DATABASE_PASSWORD=abcdefgh123456
+#DATABASE_HOST=dolana-db.cx248m4we6k7.us-east-1.rds.amazonaws.com
+#DATABASE_PORT=5432
+#REDIS_HOST=dolana-cache-7fftml.serverless.use1.cache.amazonaws.com
+#REDIS_PORT=6379
+#REDIS_PASSWORD=0123456789abcdef
+#
+#            - DJANGO_SETTINGS_MODULE=statuspage.settings
+#      - STATUS_PAGE_CONFIGURATION=statuspage.configuration_example
