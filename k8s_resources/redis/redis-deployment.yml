@@ -18,10 +18,6 @@ spec:
           image: redis:latest
           ports:
             - containerPort: 6379
-#          command:
-#            - "redis-server"
-#            - "--requirepass"
-#            - "0123456789abcdef"
 
 ---
 

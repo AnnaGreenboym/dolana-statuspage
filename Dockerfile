@@ -30,7 +30,7 @@ WORKDIR /opt
 COPY ./opt /opt 
 
 #Expose the application port (Gunicorn typically runs on 8001)
-EXPOSE 8001
+EXPOSE 8000
 #add user
 RUN adduser --system --group status-page
 
