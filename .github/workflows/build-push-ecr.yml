@@ -32,9 +32,9 @@ jobs:
           python -m pip install --upgrade pip
 
       # Step 4: build status-page image
-      - name: Build status-page image
-        run:
-          docker build -t status-page .
+      #- name: Build status-page image
+      #  run:
+      #    docker build -t status-page .
 
       # Step 5: up containers
       - name: Start Containers with Docker Compose
