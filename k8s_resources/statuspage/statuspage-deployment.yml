@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: status-page-server
+  namespace: staging
+  labels:
+    app: status-page-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: status-page-server
+  template:
+    metadata:
+      labels:
+        app: status-page-server
+    spec:
+      containers:
+      - name: status-page-server
+        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/anna/final-workshop:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        - containerPort: 8001
+        env:
+        - name: REDIS_HOST
+          value: redis-server                
+        volumeMounts:
+          - name: static-files
+            mountPath: /temp  
+        #command: [ "tail", "-f", "/dev/null" ]                
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            echo 'Running upgrade.sh...' &&
+            bash /opt/upgrade.sh &&
+
+            mkdir -p /temp/static &&
+            cp /opt/contrib/nginx.conf /temp/ &&
+            cp -r /opt/statuspage/static/* /temp/static/ &&
+
+            source /opt/venv/bin/activate &&
+            gunicorn --bind 0.0.0.0:8000 statuspage.wsgi:application \
+              --chdir /opt/statuspage --workers 3 --log-level debug
+      volumes:
+        - name: static-files
+          persistentVolumeClaim:
+            claimName: status-page-pvc
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: status-page-server
+spec:
+  type: ClusterIP
+  selector:
+    app:  status-page-server
+  ports:
+    - name: appport
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
+      

@@ -12,7 +12,8 @@ services:
     hostname: redis-server
 
   status-page:
-    image: status-page
+    build: .
+    image: status-page:latest
     container_name: status-page
     restart: "no"  # Prevents auto-restarting after script runs
     depends_on:
@@ -26,7 +27,7 @@ services:
       - "8001:8001"
     hostname: status-page-server
     volumes:
-      - ./opt:/opt
+     - ./opt:/opt
     command: >
       /bin/bash -c "
       echo 'Running upgrade.sh...' &&

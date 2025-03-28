@@ -20,13 +20,17 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libssl-dev \
     zlib1g-dev \
-    && apt-get clean
+    && apt-get clean\
+    mkdir temp
 
 # Set the working directory inside the container
 WORKDIR /opt
 
+#ADDED FOR DEPLOYMENT TESTS
+COPY ./opt /opt 
+
 #Expose the application port (Gunicorn typically runs on 8001)
-EXPOSE 8001
+EXPOSE 8000
 #add user
 RUN adduser --system --group status-page
 

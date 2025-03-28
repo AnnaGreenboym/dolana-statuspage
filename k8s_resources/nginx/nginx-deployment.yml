@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-server
+  namespace: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-server
+  template:
+    metadata:
+      labels:
+        app: nginx-server
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+          - containerPort: 80
+          - containerPort: 443
+        volumeMounts:
+        - name: efs-volume
+          mountPath: /opt/statuspage/nginx.conf
+          subPath: nginx.conf
+        - name: efs-volume
+          mountPath: /opt/statuspage/static
+          subPath: static
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            cp /opt/statuspage/nginx.conf /etc/nginx/nginx.conf &&
+            nginx -g 'daemon off;'
+      volumes:
+      - name: efs-volume
+        persistentVolumeClaim:
+          claimName: status-page-pvc
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-server
+  namespace: staging
+spec:
+  selector:
+    app: nginx-server
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+    - name: https
+      port: 443
+      targetPort: 443
+  type: LoadBalancer
