@@ -5,6 +5,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - Dockerfile
+      - opt/**        # Example: a folder you want to watch
+      - .github/**    # Optional: if you want to react to workflow changes
 
 jobs:
   check_and_push:
