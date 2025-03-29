@@ -63,11 +63,11 @@ spec:
             secretKeyRef:
               name: statuspage-secret
               key: DATABASE_PASSWORD
-        - name: REDIS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: statuspage-secret
-              key: REDIS_PASSWORD             
+#        - name: REDIS_PASSWORD
+#          valueFrom:
+#            secretKeyRef:
+#              name: statuspage-secret
+#              key: REDIS_PASSWORD             
         volumeMounts:
           - name: static-files
             mountPath: /temp  
