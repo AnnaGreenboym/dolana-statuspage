@@ -1,4 +1,4 @@
-#
+import os
 # Required Settings
 #
 
@@ -6,16 +6,16 @@
 # write access to the server via any other hostnames. The first FQDN in the list will be treated as the preferred name.
 #
 # Example: ALLOWED_HOSTS = ['status-page.example.com', 'status-page.internal.local']
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
 # PostgreSQL database configuration. See the Django documentation for a complete list of available parameters:
 #   https://docs.djangoproject.com/en/stable/ref/settings/#databases
 DATABASE = {
-    'NAME': 'statuspage',         # Database name
-    'USER': 'postgres',               # PostgreSQL username
-    'PASSWORD': 'abcdefgh123456',           # PostgreSQL password
-    'HOST': 'dolana-db.cx248m4we6k7.us-east-1.rds.amazonaws.com',      # Database server
-    'PORT': '',               # Database port (leave blank for default)
+    'NAME': os.getenv('DATABASE_NAME', 'statuspage'),         # Database name
+    'USER': os.getenv('DATABASE_USER', 'postgres'),               # PostgreSQL username
+    'PASSWORD': os.getenv('DATABASE_PASSWORD', ''),           # PostgreSQL password
+    'HOST': os.getenv('DATABASE_HOST', 'localhost'),      # Database server
+    'PORT': os.getenv('DATABASE_PORT', '5432'),               # Database port (leave blank for default)
     'CONN_MAX_AGE': 300,      # Max database connection age
 }
 
@@ -23,12 +23,12 @@ DATABASE = {
 # for each. Full connection details are required.
 REDIS = {
     'tasks': {
-        'HOST': 'dolana-cache-7fftml.serverless.use1.cache.amazonaws.com',
-        'PORT': 6379,
+        'HOST': os.getenv('REDIS_HOST', 'redis-server'),
+        'PORT': os.getenv('REDIS_PORT', '6379'),
         # Comment out `HOST` and `PORT` lines and uncomment the following if using Redis Sentinel
         # 'SENTINELS': [('mysentinel.redis.example.com', 6379)],
         # 'SENTINEL_SERVICE': 'status-page',
-        'PASSWORD': '0123456789abcdef',
+        'PASSWORD': os.getenv('REDIS_RASSWORD', ''),
         'DATABASE': 0,
         'SSL': False,
         # Set this to True to skip TLS certificate verification
@@ -36,12 +36,12 @@ REDIS = {
         # 'INSECURE_SKIP_TLS_VERIFY': False,
     },
     'caching': {
-        'HOST': 'dolana-cache-7fftml.serverless.use1.cache.amazonaws.com',
-        'PORT': 6379,
+        'HOST': os.getenv('REDIS_HOST', 'redis-server'),
+        'PORT': os.getenv('REDIS_PORT', '6379'),
         # Comment out `HOST` and `PORT` lines and uncomment the following if using Redis Sentinel
         # 'SENTINELS': [('mysentinel.redis.example.com', 6379)],
         # 'SENTINEL_SERVICE': 'statuspage',
-        'PASSWORD': '0123456789abcdef',
+        'PASSWORD': os.getenv('REDIS_RASSWORD', ''),
         'DATABASE': 1,
         'SSL': False,
         # Set this to True to skip TLS certificate verification
