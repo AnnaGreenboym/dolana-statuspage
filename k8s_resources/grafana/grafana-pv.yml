@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: grafana-pv
+  namespace: staging
+  labels:
+    volume-group: staging-monitor
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: app-efs-sc
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: fs-09de73123159e568b
