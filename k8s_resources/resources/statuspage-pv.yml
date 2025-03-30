@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: status-page-pv
+  name: status-page-pv-dev
   namespace: dev
   labels:
-    volume-group: staging-app
+    volume-group: staging-app-dev
 spec:
   capacity:
     storage: 5Gi
