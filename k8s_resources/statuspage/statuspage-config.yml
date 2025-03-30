@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: statuspage-config
-  namespace: staging
+  namespace: dev
 data:
   ALLOWED_HOSTS: "*"
   DATABASE_NAME: statuspage
