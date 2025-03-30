@@ -1,0 +1,4 @@
+resources:
+  - storage-class.yml
+  - statuspage-pv.yml
+  - statuspage-pvc.yml
