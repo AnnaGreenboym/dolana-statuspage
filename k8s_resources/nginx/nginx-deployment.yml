@@ -35,7 +35,7 @@ spec:
       volumes:
       - name: efs-volume
         persistentVolumeClaim:
-          claimName: status-page-pvc
+          claimName: status-page-pvc-dev
 
 ---
 
