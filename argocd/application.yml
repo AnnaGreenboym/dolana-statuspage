@@ -9,6 +9,8 @@ spec:
     repoURL: https://github.com/AnnaGreenboym/dolana-statuspage.git
     targetRevision: argocd
     path: k8s_resources
+    kustomize:
+      version: v1
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
