@@ -10,6 +10,7 @@ metadata:
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:992382545251:certificate/d1e120d9-d49a-4b44-a067-6d4b07258d28
     alb.ingress.kubernetes.io/ssl-redirect: '443'
     alb.ingress.kubernetes.io/group.name: dolana-ingress
+    alb.ingress.kubernetes.io/backend-protocol: HTTPS
 spec:
   ingressClassName: alb
   rules:
