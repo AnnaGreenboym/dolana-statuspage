@@ -1,3 +1,3 @@
 resources:
-  - ingress_argo.yml
+  - ingress-argo.yml
   - ingress-deployment.yml
