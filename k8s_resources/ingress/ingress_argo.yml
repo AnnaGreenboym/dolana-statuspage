@@ -13,7 +13,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: status-page.dolana.casa
+    - host: argo.dolana.casa
       http:
         paths:
           - path: /
