@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: status-page-server
-        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/anna/final-workshop:latest
+        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/anna/final-workshop:IMAGE_TAG
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
