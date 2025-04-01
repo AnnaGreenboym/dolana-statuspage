@@ -1,0 +1,3 @@
+resources:
+  - ingress-argo.yml
+  - ingress-deployment.yml

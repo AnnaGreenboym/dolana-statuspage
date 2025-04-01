@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: status-page-server
-  namespace: staging
+  namespace: dev
   labels:
     app: status-page-server
 spec:
@@ -88,7 +88,7 @@ spec:
       volumes:
         - name: static-files
           persistentVolumeClaim:
-            claimName: status-page-pvc
+            claimName: status-page-pvc-dev
 
 ---
 kind: Service

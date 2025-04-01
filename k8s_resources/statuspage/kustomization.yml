@@ -1,0 +1,4 @@
+resources:
+  - statuspage-config.yml
+  - statuspage-secret.yml
+  - statuspage-deployment.yml
