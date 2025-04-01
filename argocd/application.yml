@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/AnnaGreenboym/dolana-statuspage.git
-    targetRevision: argocd
+    targetRevision: main
     path: k8s_resources
     kustomize:
       version: v1
