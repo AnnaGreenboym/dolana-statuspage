@@ -10,6 +10,9 @@ on:
       - opt/**        # Example: a folder you want to watch
       - .github/**    # Optional: if you want to react to workflow changes
 
+permissions:
+  contents: write
+
 jobs:
   check_and_push:
     runs-on: ubuntu-latest
