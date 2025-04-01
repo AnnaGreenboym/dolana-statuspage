@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: status-page-server
-        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/anna/final-workshop:3a2cb0c95d4502c34b49552569a38ad8cd4d580d
+        image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/anna/final-workshop:f1175f1ff735c837a95da1c7accf9f5692f8b3a8
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
@@ -84,7 +84,7 @@ spec:
 
             source /opt/venv/bin/activate &&
             gunicorn --bind 0.0.0.0:8000 statuspage.wsgi:application \
-              --chdir /opt/statuspage --workers 3 --log-level debug
+              --chdir /opt/statuspage --workers 3 --log-level debug --timeout 120
       volumes:
         - name: static-files
           persistentVolumeClaim:
