@@ -78,7 +78,7 @@ jobs:
         ref: lets-play
         fetch-depth: 0  # Needed to push new branches
 
-jobs:
+
   update-manifest:
     runs-on: ubuntu-latest
     steps:
