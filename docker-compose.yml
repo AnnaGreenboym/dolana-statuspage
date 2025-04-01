@@ -21,7 +21,14 @@ services:
     networks:
       - mynetwork
     environment:
+      ALLOWED_HOSTS: "*"
+      DATABASE_NAME: statuspage
+      DATABASE_USER: postgres
+      DATABASE_HOST: dolana-db.cx248m4we6k7.us-east-1.rds.amazonaws.com
+      DATABASE_PORT: "5432"
       REDIS_HOST: redis-server
+      REDIS_PORT: "6379"
+      DATABASE_PASSWORD: abcdefgh123456
     ports:
       - "8000:8000"
       - "8001:8001"
