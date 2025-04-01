@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: status-page-server
-        image: /:ef0ca55c5ad6ecf00baeffe8bd182c8c2b56ded9
+        image: /:648ec3ee30d9fb5a8df25b943e221ca4f6f301cc
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
