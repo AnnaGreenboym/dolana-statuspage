@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ECR_URL: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${{ vars.ECR_REPOSITORY }}
+      IMAGE_TAG: ${{ github.sha }}
 
 
     steps:
@@ -71,5 +72,17 @@ jobs:
       # Step 9: build and push image to ECR
       - name: Build Docker images
         run: |
-          docker tag status-page:latest $ECR_URL:latest
-          docker push $ECR_URL:latest
+          docker tag status-page:latest $ECR_URL:$IMAGE_TAG
+          docker push $ECR_URL:$IMAGE_TAG
+
+      - name: Update Kubernetes Manifest with new image tag
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          
+          sed -i "s|image: .*|image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}|g" eks_resources/statuspage/statuspage-deployment.yml
+          
+          git add eks_resources/statuspage/statuspage-deployment.yml
+          git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
+          git push
+
