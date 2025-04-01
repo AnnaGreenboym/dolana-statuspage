@@ -78,23 +78,33 @@ jobs:
         ref: lets-play
         fetch-depth: 0  # Needed to push new branches
 
-    - name: Update Kubernetes Manifest with new image tag
-      run: |
-        ECR_URL="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${{ vars.ECR_REPOSITORY }}"
-        IMAGE_TAG="${{ github.sha }}"
+jobs:
+  update-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repo and switch to manifest_update branch
+      - uses: actions/checkout@v3
+        with:
+          ref: manifest_update
+          fetch-depth: 0  # fetch all branches&#8203;:contentReference[oaicite:6]{index=6}
 
-        git config user.name github-actions
-        git config user.email github-actions@github.com
+      - name: Refresh statuspage-deployment.yml with new image
+        env:
+          ECR_URL: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${{ vars.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Get the latest version of the file from lets-play branch
+          git fetch origin lets-play
+          git restore --source=origin/lets-play -- k8s_resources/statuspage/statuspage-deployment.yml
 
+          # Replace placeholder with actual image URL:tag
+          sed -i "s|image: <IMAGE_FROM_ECR>|image: $ECR_URL:$IMAGE_TAG|" k8s_resources/statuspage/statuspage-deployment.yml
 
+          # Commit and push to manifest_update branch
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add k8s_resources/statuspage/statuspage-deployment.yml
+          git commit -m "Update statuspage-deployment.yml with image $IMAGE_TAG"
+          git push origin HEAD:manifest_update
 
-        echo "ECR_URL=${ECR_URL}"
-        echo "IMAGE_TAG=${IMAGE_TAG}"
-
-        sed -i "s|image: <IMAGE_FROM_ECR>|image: ${ECR_URL}:${IMAGE_TAG}|g" k8s_resources/statuspage/statuspage-deployment.yml
-
-        git checkout manifest_update
-        git add k8s_resources/statuspage/statuspage-deployment.yml
-        git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
-        git push origin manifest_update
 
