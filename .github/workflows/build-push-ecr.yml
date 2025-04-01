@@ -79,22 +79,21 @@ jobs:
         fetch-depth: 0  # Needed to push new branches
 
     - name: Update Kubernetes Manifest with new image tag
-      env:
-        ECR_URL: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${{ vars.ECR_REPOSITORY }}
-        IMAGE_TAG: ${{ github.sha }}
-        BASE_BRANCH: lets-play
-        
       run: |
+        ECR_URL="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/${{ vars.ECR_REPOSITORY }}"
+        IMAGE_TAG="${{ github.sha }}"
+
         git config user.name github-actions
         git config user.email github-actions@github.com
 
-        # Create and switch to a new branch
         git checkout -b manifest_update
 
-        # Update the image tag
+        echo "ECR_URL=${ECR_URL}"
+        echo "IMAGE_TAG=${IMAGE_TAG}"
+
         sed -i "s|image: <IMAGE_FROM_ECR>|image: ${ECR_URL}:${IMAGE_TAG}|g" k8s_resources/statuspage/statuspage-deployment.yml
 
-        # Commit and push changes
         git add k8s_resources/statuspage/statuspage-deployment.yml
         git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
         git push origin manifest_update
+
