@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: argocd-dolana-proj
-  namespace: argocd
+  namespace: lets-play
 spec:
   project: default
   source:
