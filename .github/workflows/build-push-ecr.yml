@@ -25,6 +25,8 @@ jobs:
       # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: lets-play
 
       # Step 2: Set up Python
       - name: Set up Python
@@ -83,9 +85,9 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
         
-          sed -i "s|image: <IMAGE_FROM_ECR>|image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}|g" k8s_resources/statuspage/statuspage-deployment.yml
+          sed -i "s|image: <IMAGE_FROM_ECR>|image: ${ECR_URL}:${IMAGE_TAG}|g" k8s_resources/statuspage/statuspage-deployment.yml
           
           git add k8s_resources/statuspage/statuspage-deployment.yml
           git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
-          git push
+          git push origin lets-play
 
