@@ -80,9 +80,9 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           
-          sed -i "s|image: .*|image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}|g" eks_resources/statuspage/statuspage-deployment.yml
+          sed -i "s|image: .*|image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}|g" k8s_resources/statuspage/statuspage-deployment.yml
           
-          git add eks_resources/statuspage/statuspage-deployment.yml
+          git add k8s_resources/statuspage/statuspage-deployment.yml
           git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
           git push
 
