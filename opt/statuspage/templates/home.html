@@ -204,7 +204,10 @@
     </div>
   {% endif %}
   <div class="flex flex-col space-y-4">
-    <div class="text-2xl">Past Incidents - DEMO </div>
+    <div class="bg-yellow-200 text-black px-4 py-2 rounded-md">
+      🧠 AI Suggestion: Try turning it off and on again.
+    </div>
+  <div class="text-2xl">Past Incidents - DEMO </div>
     <div class="flex flex-col space-y-8">
       {% if should_show_history %}
         {% for date, incidents_maintenances in resolved_incidents_maintenances %}
