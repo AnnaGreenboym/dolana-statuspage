@@ -1,3 +1,4 @@
 resources:
   - ingress-argo.yml
   - ingress-deployment.yml
+  - ingres-monitoring.yml
